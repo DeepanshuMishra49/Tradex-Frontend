@@ -22,7 +22,8 @@ import WithdrawalAdmin from "./Admin/Withdrawal/WithdrawalAdmin";
 import Activity from "./pages/Activity/Activity";
 import SearchCoin from "./pages/Search/Search";
 import { shouldShowNavbar } from "./Util/shouldShowNavbar";
-
+import Footer from './components/ui/footer';
+  // Import the Footer component
 
 const routes = [
   { path: "/", role: "ROLE_USER" },
@@ -40,24 +41,22 @@ const routes = [
 ];
 
 function App() {
-  const {auth}=useSelector(store=>store);
-  const dispatch=useDispatch();
+  const { auth } = useSelector(store => store);
+  const dispatch = useDispatch();
 
-  useEffect(()=>{
-dispatch(getUser(localStorage.getItem("jwt")))
-  },[auth.jwt])
+  useEffect(() => {
+    dispatch(getUser(localStorage.getItem("jwt")));
+  }, [auth.jwt]);
 
-  const showNavbar=!auth.user?false:shouldShowNavbar(location.pathname,routes,auth.user?.role)
+  const showNavbar = !auth.user ? false : shouldShowNavbar(location.pathname, routes, auth.user?.role);
 
   return (
     <>
-      {" "}
       {auth.user ? (
         <>
-         {showNavbar && <Navbar />}
+          {showNavbar && <Navbar />}
           <Routes>
             <Route element={<Home />} path="/" />
-            
             <Route element={<Portfolio />} path="/portfolio" />
             <Route element={<Activity />} path="/activity" />
             <Route element={<Wallet />} path="/wallet" />
@@ -68,10 +67,10 @@ dispatch(getUser(localStorage.getItem("jwt")))
             <Route element={<Watchlist />} path="/watchlist" />
             <Route element={<Profile />} path="/profile" />
             <Route element={<SearchCoin />} path="/search" />
-            {auth.user.role=="ROLE_ADMIN"&&<Route element={<WithdrawalAdmin />} path="/admin/withdrawal" />}
+            {auth.user.role === "ROLE_ADMIN" && <Route element={<WithdrawalAdmin />} path="/admin/withdrawal" />}
             <Route element={<Notfound />} path="*" />
-            
           </Routes>
+          <Footer />  {/* Footer added here */}
         </>
       ) : (
         <>
@@ -86,6 +85,7 @@ dispatch(getUser(localStorage.getItem("jwt")))
             <Route element={<TwoFactorAuth />} path="/two-factor-auth/:session" />
             <Route element={<Notfound />} path="*" />
           </Routes>
+          <Footer />  {/* Footer added here */}
         </>
       )}
     </>
